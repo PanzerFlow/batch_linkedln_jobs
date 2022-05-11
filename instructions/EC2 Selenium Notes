@@ -1,0 +1,14 @@
+How To Install Google Chrome, Selenium & Chromedriver For AWS EC2 Instances
+    Download Chrome, this should give you the latest stable version.
+
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo apt install ./google-chrome-stable_current_amd64.deb
+        google-chrome-stable --version
+
+    If you are using Chrome version 100, please download ChromeDriver 100.0.4896.60
+        sudo wget https://chromedriver.storage.googleapis.com/100.0.4896.60/chromedriver_linux64.zip
+        sudo unzip chromedriver_linux64.zip
+        sudo mv chromedriver /usr/bin/chromedriver
+        chromedriver --version
+
+    Make sure your chrome version and driver version are matching
