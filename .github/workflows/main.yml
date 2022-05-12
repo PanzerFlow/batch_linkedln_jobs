@@ -17,15 +17,14 @@ jobs:
         aws-region: us-east-1
 
     - name: Upload entry point to the project s3 bucket
-      run: |
-      cd ./pyspark
-      aws s3 cp workflow_entry.py s3://linkedln-jobs-etl/scripts/workflow_entry.py
+      run: | 
+        cd ./pyspark
+        aws s3 cp workflow_entry.py s3://linkedln-jobs-etl/scripts/workflow_entry.py
 
     - name: Zip src files and upload to s3
       run: |
-      cd ./pyspark/src
-      zip -r pyspark_script.zip .
-      aws s3 cp pyspark_script.zip s3://linkedln-jobs-etl/scripts/pyspark_script.zip
-
+        cd ./pyspark/src
+        zip -r pyspark_script.zip .
+        aws s3 cp pyspark_script.zip s3://linkedln-jobs-etl/scripts/pyspark_script.zip
 
       
