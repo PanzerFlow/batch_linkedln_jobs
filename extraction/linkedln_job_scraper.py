@@ -78,8 +78,8 @@ def save_result(jobs_json,result_folder_path):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Extracting canadian data engineering job postings from linkedin')
-    parser.add_argument('-p','--path',type=str ,metavar='',required=True,help='Full folder path to save the result')
-    parser.add_argument('-l','--limit',type=int,metavar='',required=True,help='Amount of job posting you want to pull')
+    parser.add_argument('-rpf','--result_path_folder',type=str ,metavar='',required=True,help='Full folder path to save the result')
+    parser.add_argument('-pl','--pull_limit',type=int,metavar='',required=True,help='Amount of job posting you want to pull')
     args = parser.parse_args()
 
     logging.basicConfig(level = logging.INFO)
@@ -87,31 +87,17 @@ if __name__ == '__main__':
     jobs_json = []
 
     startTime = time.time()
-    trigger_scraper(args.limit)
+    trigger_scraper(args.pull_limit)
     executionTime = (time.time() - startTime)
-    filename=save_result(jobs_json,args.path)
+    filename=save_result(jobs_json,args.result_path_folder)
 
     print('Execution time in seconds: ' + str(executionTime))
 
 
-
-
 """
-Env variable
-LI_AT_COOKIE=AQEDATtaB8IFbDnsAAABgHzp2l0AAAGAoPZeXVYAl4ZbUSp9Wvnfpsve-rkPgBcxcOLgtgLgzTFmPocEWNNRVExYEW-xeXxov-isabSRS_LQdBOo_33mPzAu9-7oltTYJd093yb7n4rGXEG1j-tMhUgO python3 /home/ubuntu/development/batch_linkedln_job_posts/linkedln_job_scraper.py
-
 Result should be similar to this 
 https://www.linkedin.com/jobs/search/?f_TPR=r86400&keywords=data%20engineer&location=Canada
 
-Copy result to s3
-aws s3 cp ./temp.json s3://linkedln-jobs-etl/raw/temp.json
-
 Trigger the script
-python3 linkedln_job_scraper.py -p ./ -l 5
+python3 /home/ubuntu/development/batch_linkedln_jobs/extraction/linkedln_job_scraper.py --result_path_folder /home/ubuntu/data/raw/linkedln --pull_limit 5
 """
-
-
-
-
-
-
