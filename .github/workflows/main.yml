@@ -1,0 +1,27 @@
+name: Build pyspark files and upload to s3
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: Upload entry point to the project s3 bucket
+      run: aws s3 cp ./pyspark/workflow_entry.py s3://linkedln-jobs-etl/scripts/workflow_entry.py
+
+    - name: Zip src files, and upload the .zip file to the project s3 bucket
+      run: cd ./pyspark/src 
+      run: zip -r pyspark_script.zip .
+      run: aws s3 cp ./pyspark/src/pyspark_script.zip s3://linkedln-jobs-etl/scripts/pyspark_script.zip
+
+      
