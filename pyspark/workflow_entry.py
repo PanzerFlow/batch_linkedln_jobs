@@ -5,11 +5,11 @@ from pipeline_utils.package import SparkParams
 from pyspark.sql import SparkSession
 
 """
-Spark submit example:
+Spark submit example
 To build the artifact
-zip -r job.zip . && cp job.zip ~/data/ && cp ../workflow_entry.py ~/data/
 
-docker run -dit --name pyspark -v /home/eguo/data:/data -v /home/eguo/spark-repo:/spark-repo jupyter/pyspark-notebook
+zip -r job.zip .
+
 spark-submit --master local --py-files /data/job.zip /data/workflow_entry.py -p "{'input_path':'/data/banking.csv','name':'demo', 'file_type':'txt', 'output_path':'/data/pyspark', 'partition_column': 'job'}"
 """
 
