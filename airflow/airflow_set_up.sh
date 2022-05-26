@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Start up the docker compose containers
-cd /home/ubuntu/development/batch_linkedln_job_posts
+cd /home/ubuntu/development/batch_linkedln_jobs/airflow
 docker-compose up -d #docker-compose restart -d
 sleep 2m #Sleep to make sure containers are in health state
 echo "Airflow is running"

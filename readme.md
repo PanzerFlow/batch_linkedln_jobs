@@ -10,11 +10,17 @@
 
 ## 1. Introduction
 
-Web Scraping LinkedIn Job Postings and storing the data in RDS instance
+Data Publisher >> S3 Raw >> Lambda >> Airflow >> EMR >> S3 Stage >> Glue Crawler >> Athena
 
-> Place holder
+Data Publisher -> Cron job on an ec2 modelling an data source
+S3 Raw -> s3://linkedln-jobs-etl/raw/, file landing notification trigger the lambda function
+Lambda -> Calling an rest API to an airflow instance
+Airflow -> Trigger emr to process the data in raw and process the data into stage
+S3 Stage -> Result Data location
+Glue Crawler, Athena -> Provide sql engine for data processing
 
-1. Place holder
+
+## 1. Place holder
 
 
 ## 2. Objective
