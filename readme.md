@@ -18,6 +18,12 @@ As such, the project is more complex than required, utilising airflow, docker an
 
 ## 2. Design
 
+This data pipeline will be 
+Classifying movie reviews with Apache Spark.
+Loading the classified movie reviews into the data warehouse.
+Extract user purchase data from an OLTP database and load it into the data warehouse.
+Joining the classified movie review data and user purchase data to get user behavior metric data.
+
 
 Data Publisher >> S3 Raw >> Lambda >> Airflow >> EMR >> S3 Stage >> Glue Crawler >> Athena
 
@@ -27,9 +33,8 @@ Lambda -> Calling an rest API to an airflow instance
 Airflow -> Trigger emr to process the data in raw and process the data into stage
 S3 Stage -> Result Data location
 Glue Crawler, Athena -> Provide sql engine for data processing
-
+PowerBI-> Visual
 ## 3. Output
-
 
 ## 4. Setup
 
