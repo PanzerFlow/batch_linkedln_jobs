@@ -1,10 +1,12 @@
 from pyspark.sql import functions as f
 from pipeline_step.pipeline_step import PipelineStep
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import udf,col
+from pyspark.sql.functions import udf,col,when,regexp_replace
 from pyspark.sql.types import StringType
 import re,string
 
+
+#Create function to remove features from the job description
 def remove_features(data_str):
     # compile regex
     url_re = re.compile('https?://(www.)?\w+\.\w+(/\w+)*/?')
@@ -39,7 +41,7 @@ def remove_features(data_str):
         list_pos += 1
     return cleaned_str
 
-#Create stopwords list for text cleaning
+#Create function to remove stopwords from the job description
 def remove_stops_words (desc_text : str) -> str:
   stopwords_core = {
           "a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "arent", "as", "at", 
@@ -82,8 +84,42 @@ def remove_stops_words (desc_text : str) -> str:
   result_desc_text = ' '.join(list(filter(lambda x: x not in stopwords,desc_text_list)))
   return result_desc_text
 
+#Create function to extract words that is de technology related
+def extract_de_words (desc_text : str) -> str:
+   #Create a list of words that is de technology related
+  de_core = {
+    "acid"	,"active"	,"activemq"	,"airflow"	,"algorithm"	,"amazon"	,"aws"	,"apache"	,"api"	,"arrow"	,"aurora"	,"azure"																
+    ,"batch"	,"beam"	,"bigquery"	,"bigtable"	,"bitbucket"	,"blob"																						
+    ,"cap"	,"cassandra"	,"cdk"	,"ci/cd"	,"classification"	,"cli"	,"clickhouse"	,"cloud"	,"cluster"	,"column"	,"compliance"	,"composer"	,"containers"	,"couchdb"	,"cronjobs"	,"cormosdb"												
+    ,"dbt"	,"database"	,"databases"	,"datadog"	,"datafold"	,"dataproc"	,"dimensional"	,"directory"	,"dns"	,"docker"	,"document"	,"dynamodb"																
+    ,"elasticsearch"	,"emr"	,"encryption"	,"evaluation"	,"etl"	,"elt"																						
+    ,"firewalls"	,"flink"	,"functional"	,"functional"																								
+    ,"git"	,"github"	,"gitlab"	,"go"	,"google"	,"google pubsub"	,"governance"	,"grafana"	,"graph"	,"gcp"	,"google"																	
+    ,"hadoop"	,"hbase"	,"hdfs"	,"hive"	,"horizontal"	,"http"	,"https"	,"hybrid"																				
+    ,"impala"	,"infrastructure"	,"integration"	,"integrity"	,"ip"																							
+    ,"java"	,"jenkins"	,"jupyter"																									
+    ,"kafka"	,"kappa architectures"	,"keras"	,"key"	,"key-value"	,"kinesis"	,"kubeflow"	,"kubernetes"	,"kubernetes"																			
+    ,"lake"	,"lambda"	,"learning"	,"legal"	,"linux"	,"looker"	,"luigi"	,"lxc"																				
+    ,"machine"	,"mapreduce"	,"mariadb"	,"math"	,"memcached"	,"mesos"	,"messaging"	,"metrics"	,"mlflow"	,"modeling"	,"mongodb"	,"monitoring"	,"monte"	,"mysql"														
+    ,"neo4j"	,"neptune"	,"networking"	,"nifi"	,"non-relational"	,"normalisation"																						
+    ,"observability"	,"olap"	,"oltp"	,"oop"	,"oozie"	,"ops"	,"orchestration"	,"ozone"																				
+    ,"pig"	,"postgresql"	,"powerbi"	,"presto"	,"privacy"	,"prometheus"	,"protocols"	,"pulumi"	,"python"	,"pytorch"																		
+    ,"qlik"																											
+    ,"rabbitmq"	,"redis"	,"redshift"	,"regression"	,"relational"	,"rest"																						
+    ,"s3"	,"samza"	,"scala"	,"scaling"	,"scheduling"	,"scikit-learn"	,"security"	,"sentry"	,"serialisation"	,"shell"	,"snowflake"	,"sns"	,"soda data"	,"spark"	,"sql"	,"sqs"	,"ssh"	,"statistics"	,"statsd"	,"stores"	,"storm"	,"streaming"	,"structure"	,"structured"	,"supervised"	,"swarm"	,"synapse"	,"sagemaker"
+    ,"tableau"	,"tcp"	,"tensorflow"	,"terminal"	,"terraform"	,"testing"	,"theorem"	,"transactions"																				
+    ,"unit"	,"unstructured"	,"unsupervised"																									
+    ,"vertical"	,"vim"	,"visualise data"	,"vpc"	,"vpn"	,"vscode"																						
+    ,"warehouses"	,"wide"																																																		
+  }
+  desc_text_list = desc_text.split(" ")
+  result_de_text = ' '.join(list(filter(lambda x: x in de_core,desc_text_list)))
+  return result_de_text
+
+
 udf_remove_features = udf(remove_features,StringType())
 udf_remove_stops_words = udf(remove_stops_words,StringType())
+udf_extract_de_words = udf(extract_de_words,StringType())
 
 class PipelineTransformLinkedln(PipelineStep):
     def __init__(self):
@@ -94,6 +130,15 @@ class PipelineTransformLinkedln(PipelineStep):
         df = (
             df.withColumn('processed_desc',udf_remove_features(col('description')))
             .withColumn('clean_desc',udf_remove_stops_words(col('processed_desc')))
+            .withColumn('de_words',udf_extract_de_words(col('clean_desc')))
+            .withColumn("is_remote", when(col('place').like("%Remote%"),"Remote")
+                                        .when(col('place').like("%Hybrid%"),"Hybrid")
+                                        .otherwise("On-site")
+                    )
+            .withColumn("location", when(col('place').like("%Remote%"),"Remote")
+                                        .when(col('place').like("%Hybrid%"),regexp_replace('place', "Hybrid", ""))
+                                        .otherwise(regexp_replace('place', "On-site", ""))
+                    )
             )
         return df
 

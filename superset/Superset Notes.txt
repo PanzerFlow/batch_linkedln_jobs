@@ -1,0 +1,27 @@
+For visulization, superset is optional/free. 
+I will be using powerbi for this actual project.
+
+
+Build the docker image with the docker file in this folder
+$ docker build -t project/superset .
+
+Start a superset instance on port 8081
+$ docker run -d -p 8081:8088 --name superset project/superset
+
+With your local superset container already running...,Setup your local admin account
+$ docker exec -it superset superset fab create-admin \
+              --username admin \
+              --firstname Superset \
+              --lastname Admin \
+              --email admin@superset.com \
+              --password admin
+
+
+Migrate local DB to latest
+$ docker exec -it superset superset db upgrade
+
+Setup roles
+$ docker exec -it superset superset init
+
+Login and take a look 
+-- navigate to http://localhost:8081/login/ -- u/p: [admin/admin]

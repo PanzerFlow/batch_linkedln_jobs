@@ -63,7 +63,7 @@ SPARK_STEPS = [
                     '/usr/bin/spark-submit'
                     ,'--py-files','s3://linkedln-jobs-etl/scripts/pyspark_script.zip'
                     ,'s3://linkedln-jobs-etl/scripts/workflow_entry.py'
-                    ,'-p', "{'input_path': '{{task_instance.xcom_pull(task_ids='parse_request', key='s3location')}}', 'name': 'pyspark_test', 'file_type': 'linkedln', 'output_path': 's3://linkedln-jobs-etl/stg/jobs_{{ds}}/', 'partition_column': 'date'}"
+                    ,'-p', "{'input_path': '{{task_instance.xcom_pull(task_ids='parse_request', key='s3location')}}', 'name': 'pyspark_test', 'file_type': 'linkedln', 'output_path': 's3://linkedln-jobs-etl/stg/jobs_{{ts}}/', 'partition_column': 'date'}"
                 ]
         }
     }
@@ -159,4 +159,7 @@ with DAG(
 Remove the options for
 
 /usr/bin/spark-submit --py-files s3://linkedln-jobs-etl/scripts/pyspark_script.zip s3://linkedln-jobs-etl/scripts/workflow_entry.py -p "{'input_path': 's3://linkedln-jobs-etl/raw/linkedln_jobs_de_canada_20220526_23.json', 'name': 'pyspark_test', 'file_type': 'linkedln', 'output_path': 's3://linkedln-jobs-etl/stg/jobs/', 'partition_column': 'date'}"
+
+/home/ubuntu/development/batch_linkedln_jobs/extraction/extraction_entry.sh
+
 """
