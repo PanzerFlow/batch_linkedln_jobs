@@ -9,37 +9,45 @@
   - [5. Reference](#5-reference)
 
 ## 1. Introduction
-The goal of this project is to build a data pipeline to **extract canadian data engineering job postings from Linkedin**. 
+The goal of this project is to build a data pipeline to **extract and transform canadian data engineering job postings from Linkedin**. 
 The final output of this project is an interactive PowerBI dashboard, which provides an overview of trends in canadian data engineering job market. 
-The motivation was based on an interest in understanding various trends in the data engineering jobs market and how they evolve. 
+The motivation of the project was based on an interest in understanding various trends in the data engineering jobs market and how they evolve. 
 
 This project also provides a good opportunity to develop skills and experience in a range of tools. 
 As such, the project is more complex than required, utilising airflow, docker and a series of aws technology (S3,EC2,Glue,Atehna,lambda).
 
 ## 2. Design
+### Architecture
+<img src="https://github.com/PanzerFlow/batch_linkedln_jobs/images/Arch.png" width=80% height=80%>
+<img src="https://github.com/PanzerFlow/batch_linkedln_jobs/images/DAG.png" width=80% height=80%>
 
-This data pipeline will be 
-Classifying movie reviews with Apache Spark.
-Loading the classified movie reviews into the data warehouse.
-Extract user purchase data from an OLTP database and load it into the data warehouse.
-Joining the classified movie review data and user purchase data to get user behavior metric data.
+Componets
+- Data Publisher
+  - The architecture of this project is designed to be event driven. Pipeline will be triggered once data is arrives in S3.
+  - Currently the data source is a cron job that triggers a shell script which then starts a linkedin scraper written in python. 
+
+- Cloud Storage
+  - A dedicated S3 bucket is used as the cloud storage. There are 3 different folder in this bucket that serves different puporses. 
+  - /raw is where the raw data will land in. Any put request in this folder will start an event notification to lambda function
+  - /stg is where the proccessed data live.
+  - /scripts is where the pyspark sript located. There are also automated github action setup which uploads the script to this location after each git push. 
+
+- Orchestration
+  - Airflow is used as the orchestration tool to scheudle emr and glue activity.
+  - Airflow is set up using the EC2 instance and docker-compose.
+  - S3 event notification and lambda funciton is used to trigger airflow dag via REST API.
+
+- Compute resources
+  - EC2 is used to host the data publisher and airflow. The data publisher can be moved in the future.
+  - EMR is used to transform the data once it arrives in /raw.
+  - Glue crawler and Athena are used as the compute engine which powers the dashboard. 
+
+- Visuliaztion
+  - PowerBI is used for dashboarding
 
 
-Data Publisher >> S3 Raw >> Lambda >> Airflow >> EMR >> S3 Stage >> Glue Crawler >> Athena
-
-Data Publisher -> Cron job on an ec2 modelling an data source
-S3 Raw -> s3://linkedln-jobs-etl/raw/, file landing notification trigger the lambda function
-Lambda -> Calling an rest API to an airflow instance
-Airflow -> Trigger emr to process the data in raw and process the data into stage
-S3 Stage -> Result Data location
-Glue Crawler, Athena -> Provide sql engine for data processing
-PowerBI-> Visual
 ## 3. Output
-
-## 4. Setup
-
-### 4.1 Prerequisite
-
+<img src="https://github.com/PanzerFlow/batch_linkedln_jobs/images/Demo Dash.png" width=80% height=80%>
 
 ## 5. Reference
 
