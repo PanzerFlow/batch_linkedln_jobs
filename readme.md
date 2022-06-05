@@ -1,12 +1,10 @@
 # Linkedin Jobs ETL (Batch)
 
-- [Linkedin Jobs ETL (Batch)](#beginner-de-project---batch-edition)
+- [Linkedin Jobs ETL (Batch)]
   - [1. Introduction](#1-introduction)
   - [2. Design](#2-design)
   - [3. Output](#3-output)
-  - [4. Setup](#4-setup)
-    - [4.1 Prerequisite](#41-prerequisite)
-  - [5. Reference](#5-reference)
+  - [4. Reference](#4-reference)
 
 ## 1. Introduction
 The goal of this project is to build a data pipeline to **extract and transform canadian data engineering job postings from Linkedin**. 
@@ -18,8 +16,9 @@ As such, the project is more complex than required, utilising airflow, docker an
 
 ## 2. Design
 ### Architecture
-<img src="https://github.com/PanzerFlow/batch_linkedln_jobs/images/Arch.png" width=80% height=80%>
-<img src="https://github.com/PanzerFlow/batch_linkedln_jobs/images/DAG.png" width=80% height=80%>
+<img src="https://github.com/PanzerFlow/batch_linkedln_jobs/blob/main/images/Arch.PNG" width=80% height=80%>
+
+<img src="https://github.com/PanzerFlow/batch_linkedln_jobs/blob/main/images/DAG.PNG" width=80% height=80%>
 
 Componets
 - Data Publisher
@@ -47,9 +46,9 @@ Componets
 
 
 ## 3. Output
-<img src="https://github.com/PanzerFlow/batch_linkedln_jobs/images/Demo Dash.png" width=80% height=80%>
+<img src="https://github.com/PanzerFlow/batch_linkedln_jobs/blob/main/images/Demo Dash.PNG" width=80% height=80%>
 
-## 5. Reference
+## 4. Reference
 
 [How To Install Google Chrome, Selenium & Chromedriver For AWS EC2 Instances](https://understandingdata.com/install-google-chrome-selenium-ec2-aws)
 
