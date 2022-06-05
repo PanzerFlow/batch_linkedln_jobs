@@ -16,7 +16,7 @@ As such, the project is more complex than required, utilising airflow, docker an
 
 ## 2. Design
 ### Architecture
-<a href="url"><img src="https://github.com/PanzerFlow/batch_linkedln_jobs/blob/main/images/Arch.PNG?raw=true" ></a>
+<img src="https://github.com/PanzerFlow/batch_linkedln_jobs/blob/main/images/Arch.PNG" width=110% height=110%>
 
 <img src="https://github.com/PanzerFlow/batch_linkedln_jobs/blob/main/images/DAG.PNG" width=100% height=100%>
 
