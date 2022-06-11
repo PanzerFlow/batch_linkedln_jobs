@@ -1,1 +1,0 @@
-Please make sure to have AWS CLI pre-setup
