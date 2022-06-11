@@ -14,6 +14,9 @@ The motivation of the project was based on an interest in understanding various 
 This project also provides an excellent opportunity to develop skills and experience in a range of tools. 
 As such, the project is more complex than required, utilizing airflow, docker, and a series of AWS technology (S3, EC2,Glue,Athena, lambda).
 
+An additional ppt file with similar content can also be found below
+https://github.com/PanzerFlow/batch_linkedln_jobs/ppt/Linkedln_Batch_ETL_Demo.pptx
+
 ## 2. Design
 ### Architecture
 <img src="https://github.com/PanzerFlow/batch_linkedln_jobs/blob/main/images/Arch.PNG" width=110% height=110%>
