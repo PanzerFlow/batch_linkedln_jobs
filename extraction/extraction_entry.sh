@@ -4,7 +4,7 @@
 dir_path="/home/ubuntu/data/raw/linkedln"
 
 #Trigger the extraction script to pull the job posting and save it as json in the local environment
-python3 /home/ubuntu/development/batch_linkedln_jobs/extraction/linkedln_job_scraper.py --result_path_folder $dir_path --pull_limit 200
+python3 /home/ubuntu/development/batch_linkedln_jobs/extraction/linkedln_job_scraper.py --result_path_folder $dir_path --pull_limit 20
 echo "Extraction is complete and result is saved to $dir_path"
 
 #Trigger the python script to upload the result json to S3
